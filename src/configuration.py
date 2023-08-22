@@ -1,3 +1,8 @@
-MONGODB_URL = "mongodb://192.168.1.55:27017"
-DB_NAME = "cat-watcher"
-COLLECTION_NAME = "photos"
+from dotenv import load_dotenv
+import os
+
+load_dotenv('.env')
+
+MONGODB_URL = os.getenv("URI")
+DB_NAME = os.getenv("DB")
+COLLECTION_NAME = os.getenv("collection")
