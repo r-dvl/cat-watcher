@@ -7,7 +7,7 @@ from MongoDB import MongoDB
 
 def main():
     cam = Camera('cam', 0)
-    mongo = MongoDB(MONGODB_URL, DB_NAME, COLLECTION_NAME)
+    mongo = MongoDB()
 
     ret, frame1 = cam.get_cap()
     ret, frame2 = cam.get_cap()
