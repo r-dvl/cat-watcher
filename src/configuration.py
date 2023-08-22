@@ -3,6 +3,7 @@ import os
 
 load_dotenv('.env')
 
-MONGODB_URL = os.getenv("URI")
-DB_NAME = os.getenv("DB")
-COLLECTION_NAME = os.getenv("collection")
+MONGO_USER = os.getenv('MONGO_USER')
+MONGO_PASSWORD = os.getenv('MONGO_PASSWORD')
+MONGO_URI = os.getenv('MONGO_URI')
+MONGO_DB = os.getenv('MONGO_DB')

@@ -3,7 +3,6 @@ import datetime
 
 from Camera import Camera
 from MongoDB import MongoDB
-from configuration import MONGODB_URL, DB_NAME, COLLECTION_NAME
 
 
 def main():
