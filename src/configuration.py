@@ -1,6 +1,7 @@
 from dotenv import load_dotenv
 import os
 
+
 load_dotenv()
 
 MONGO_USER = os.getenv('MONGO_USER')

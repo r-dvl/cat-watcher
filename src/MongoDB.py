@@ -1,6 +1,7 @@
 from pymongo import MongoClient
 from configuration import MONGO_USER, MONGO_PASSWORD, MONGO_URI, MONGO_DB
 
+
 class MongoDB:
     def __init__(self):
         self.user = MONGO_USER

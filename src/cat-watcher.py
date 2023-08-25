@@ -1,5 +1,6 @@
 import cv2
 import datetime
+import base64
 
 from Camera import Camera
 from MongoDB import MongoDB
@@ -30,8 +31,8 @@ def main():
                 continue
 
             if counter == 100:
-                motion = cam.take_photo(frame1)
-                mongo.post_photo(motion, datetime.datetime.now())
+                photo = base64.b64encode(cv2.imencode('.jpg', frame1)[1]).decode('utf-8')
+                mongo.post_photo(photo, datetime.datetime.now())
                 counter += 1
 
             elif counter > 100:
@@ -44,6 +45,7 @@ def main():
         ret, frame2 = cam.get_cap()
 
     cam.cap.release()
+
 
 if __name__ == '__main__':
     main()
