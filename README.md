@@ -8,6 +8,16 @@ Motion detector built with Python, OpenCV and Pymongo. Once motion is detected t
 - MongoDB
 
 ## Structure
+~~~text
+(root)
++- src                                      # Source files (Classes + Main script)
+|   +- Camera.py                            # Camera Class
+|   +- MongoDB.py                           # MongoDB Singleton Class
+|   +- cat-watcher.py                       # Main script
+|   +- configuration.py                     # Configuration read from dotenv (.env file)
++- .env                                     # Environment variables read for MongoDB configuration
+~~~
+
 ### Camera
 Any webcam or camera detected by the computer works correctly. The Camera class is constructed with an id that identifies the camera to be used.
 
