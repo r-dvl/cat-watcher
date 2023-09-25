@@ -19,6 +19,7 @@ class MongoDB:
         document = {
             "image": image,
             "date": date,
+            "cat": True,
         }
 
         post = collection.insert_one(document)
