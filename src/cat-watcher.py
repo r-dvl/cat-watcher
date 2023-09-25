@@ -1,10 +1,35 @@
 import cv2
 import datetime
 import base64
+import numpy as np
 
 from Camera import Camera
 from MongoDB import MongoDB
 
+from tensorflow.keras.models import load_model
+
+model = load_model('./model/cat_identifyer.keras')
+
+def cat_identifyier(image):
+    # Image Preprocessing
+    image_bytes = base64.b64decode(image)
+    image = cv2.imdecode(np.frombuffer(image_bytes, np.uint8), -1)
+    if image.shape[-1] == 1:
+        image = cv2.cvtColor(image, cv2.COLOR_GRAY2RGB)
+
+    image = cv2.resize(image, (256, 256))
+    image = image / 255.0
+    image = np.expand_dims(image, axis=0)
+    
+    # Model Prediction
+    prediction = model.predict(image)
+
+    if prediction > 0.5:
+        print("Cat!")
+        return True
+    else:
+        print("Not a cat")
+        return False
 
 def main():
     cam = Camera('cam', 0)
@@ -32,7 +57,10 @@ def main():
 
             if counter == 100:
                 photo = base64.b64encode(cv2.imencode('.jpg', frame1)[1]).decode('utf-8')
-                mongo.post_photo(photo, datetime.datetime.now())
+
+                if cat_identifyier(photo):
+                    mongo.post_photo(photo, datetime.datetime.now())
+
                 counter += 1
 
             elif counter > 100:

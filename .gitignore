@@ -1,4 +1,11 @@
+# Python
 venv/
+_pycache_/
+
+# Media
+*.jpeg
+*.jpg
+
+# IDEs
 .idea/
 .vscode/
-_pycache_/
