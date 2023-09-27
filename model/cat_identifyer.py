@@ -23,8 +23,8 @@ def load_data(folder, label):
 
     return np.array(images), np.array(labels)  # Devolver también las etiquetas
 
-cats, cats_labels = load_data('./resources/cats', 1)
-not_cats, not_cats_labels = load_data('./resources/not_cats', 0)
+cats, cats_labels = load_data('./resources/dataset/cats', 1)
+not_cats, not_cats_labels = load_data('./resources/dataset/not_cats', 0)
 
 # Divide Data
 X = np.concatenate((cats, not_cats), axis=0)
@@ -52,4 +52,4 @@ test_loss, test_accuracy = model.evaluate(X_test, y_test)
 print(f'Test precision: {test_accuracy}')
 
 # Save Model
-model.save('cat_identifyer.keras')
+model.save('./model/cat_identifyer.keras')
