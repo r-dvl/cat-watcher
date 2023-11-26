@@ -1,15 +1,12 @@
+import os
 from pymongo import MongoClient
-from configuration import MONGO_USER, MONGO_PASSWORD, MONGO_URI, MONGO_DB
 
 
 class MongoDB:
     def __init__(self):
-        self.user = MONGO_USER
-        self.password = MONGO_PASSWORD
-        self.uri = MONGO_URI
-        self.db = MONGO_DB
+        self.db = 'cat-watcher'
         self.collection = 'photos'
-        self.completeUri = f"mongodb://{self.user}:{self.password}@{self.uri}/{self.db}"
+        self.completeUri = os.environ["MONGODB_URL"]
 
     def post_photo(self, image, date):
         client = MongoClient(self.completeUri)
