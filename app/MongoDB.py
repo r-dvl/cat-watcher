@@ -4,8 +4,8 @@ from pymongo import MongoClient
 
 class MongoDB:
     def __init__(self):
-        self.db = 'cat-watcher'
-        self.collection = 'photos'
+        self.db = 'lima'
+        self.collection = 'cat-watcher'
         self.completeUri = os.environ["MONGODB_URL"]
 
     def post_photo(self, image, date):
