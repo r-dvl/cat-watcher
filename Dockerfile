@@ -1,15 +1,21 @@
-FROM python:3.10
+FROM python:3.10-alpine
 
 WORKDIR /app
 
-COPY ./requirements.txt /app/requirements.txt
+# API Params
+ENV API_URL="http://localhost:3000"
+ENV TOKEN=
 
-RUN apt-get update && apt-get install ffmpeg libsm6 libxext6  -y
+COPY . .
 
-RUN pip install --no-cache-dir --upgrade -r /app/requirements.txt
+# Install OpenCV dependencies
+RUN apt-get update && \
+    apt-get install -y \
+            ffmpeg \
+            libsm6 \
+            libxext6
 
-COPY ./app /app
-
-ENV MONGODB_URL = "mongodb://localhost:27017"
+# Install app dependencies
+RUN pip install --no-cache-dir --upgrade -r ./requirements.txt
 
 CMD ["python3", "/app/main.py"]
