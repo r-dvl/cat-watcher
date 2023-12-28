@@ -3,33 +3,21 @@ import cv2
 import datetime
 import base64
 import asyncio
-import aiohttp
 
+from config import api, camera
+from utility import post_photo
 
-async def post_photo(url, headers, data):
-    async with aiohttp.ClientSession() as session:
-        async with session.post(url, headers=headers, json=data) as response:
-            print(f'Response status: {response.status}')
-            return await response.text()
 
 def main():
-    # API Params
-    token =  os.environ['TOKEN']
-    url = os.environ['API_URL']
-
-    # Motion Params
-    counter = 0
-    tolerance = 200
-    sensibility = 1000
-    camera_number = 0   # Any
-    
     # Camera and frames init
-    camera = cv2.VideoCapture(camera_number)
-    ret, frame1 = camera.read()
-    ret, frame2 = camera.read()
+    cap = cv2.VideoCapture(camera.number)
+    ret, frame1 = cap.read()
+    ret, frame2 = cap.read()
+    
+    counter = 0
 
     try:
-        while camera.isOpened():
+        while cap.isOpened():
             diff = cv2.absdiff(frame1, frame2)
             diff_gray = cv2.cvtColor(diff, cv2.COLOR_BGR2GRAY)
             blur = cv2.GaussianBlur(diff_gray, (5, 5), 0)
@@ -42,10 +30,10 @@ def main():
                 (x, y, w, h) = cv2.boundingRect(contour)
 
                 # Sensibility
-                if cv2.contourArea(contour) < sensibility:
+                if cv2.contourArea(contour) < camera.sensibility:
                     continue
 
-                if counter == tolerance:
+                if counter == camera.tolerance:
                     print("Movement!")
 
                     # Data
@@ -54,26 +42,26 @@ def main():
 
                     # HTTP Request body and header
                     data = {"date": f"{date}", "image": f"{photo}"}
-                    headers = {"Authorization": f"{token}"}
+                    headers = {"Authorization": f"{api.token}"}
 
                     # HTTP Request
-                    asyncio.run(post_photo(f"{url}/photos/upload", headers, data))
+                    asyncio.run(post_photo(f"{api.url}/photos/upload", headers, data))
 
                     counter += 1
 
-                elif counter > tolerance:
+                elif counter > camera.tolerance:
                     counter = 0
 
                 else:
                     counter += 1
 
             frame1 = frame2
-            ret, frame2 = camera.read()
+            ret, frame2 = cap.read()
 
     except Exception as error:
         print(f"Error or interruption: {error}")
 
-    camera.release()
+    cap.release()
 
 
 if __name__ == '__main__':
