@@ -9,11 +9,11 @@ ENV TOKEN=
 COPY . .
 
 # Install OpenCV dependencies
-RUN apt-get update && \
-    apt-get install -y \
-            ffmpeg \
-            libsm6 \
-            libxext6
+RUN apt update && \
+    apt install -y \
+        ffmpeg \
+        libsm6 \
+        libxext6
 
 # Install app dependencies
 RUN pip install --no-cache-dir --upgrade -r ./requirements.txt
