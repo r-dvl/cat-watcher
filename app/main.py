@@ -12,12 +12,21 @@ async def post_photo(url, headers, data):
             print(f'Response status: {response.status}')
             return await response.text()
 
-def main():    
-    camera = cv2.VideoCapture(0)
+def main():
+    # API Params
+    token =  os.environ['TOKEN']
+    url = os.environ['API_URL']
 
+    # Motion Params
+    counter = 0
+    tolerance = 200
+    sensibility = 1000
+    camera_number = 0   # Any
+    
+    # Camera and frames init
+    camera = cv2.VideoCapture(camera_number)
     ret, frame1 = camera.read()
     ret, frame2 = camera.read()
-    counter = 0
 
     try:
         while camera.isOpened():
@@ -33,22 +42,26 @@ def main():
                 (x, y, w, h) = cv2.boundingRect(contour)
 
                 # Sensibility
-                if cv2.contourArea(contour) < 1000:
+                if cv2.contourArea(contour) < sensibility:
                     continue
 
-                if counter == 200:
+                if counter == tolerance:
                     print("Movement!")
 
+                    # Data
                     photo = base64.b64encode(cv2.imencode('.jpg', frame1)[1]).decode('utf-8')
                     date = datetime.datetime.now()
-                    data = {"date": f"{date}", "image": f"{photo}"}
 
-                    headers = {"Authorization": f"{os.environ['TOKEN']}"}
-                    asyncio.run(post_photo(f"{os.environ['API_URL']}/photos/upload", headers, data))
+                    # HTTP Request body and header
+                    data = {"date": f"{date}", "image": f"{photo}"}
+                    headers = {"Authorization": f"{token}"}
+
+                    # HTTP Request
+                    asyncio.run(post_photo(f"{url}/photos/upload", headers, data))
 
                     counter += 1
 
-                elif counter > 200:
+                elif counter > tolerance:
                     counter = 0
 
                 else:
