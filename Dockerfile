@@ -18,4 +18,4 @@ RUN apt update && \
 # Install app dependencies
 RUN pip install --no-cache-dir --upgrade -r ./requirements.txt
 
-CMD ["python3", "/app/main.py"]
+CMD ["python3", "./app/main.py"]
