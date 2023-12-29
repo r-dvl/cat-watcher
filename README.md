@@ -12,3 +12,4 @@ Motion detector built with Python and OpenCV. Once motion is detected the motion
 - [API](https://github.com/r-dvl/lima-backend)
 - [Front](https://github.com/r-dvl/lima-frontend)
 - Database
+
