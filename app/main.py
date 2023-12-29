@@ -14,8 +14,8 @@ def main():
     ret, frame1 = cap.read()
     ret, frame2 = cap.read()
     
-    # Movement must be continuous to take a photo
-    counter = 0
+    # A cumulative amount of motion is needed to take a picture
+    motion = 0
 
     try:
         while cap.isOpened():
@@ -33,14 +33,12 @@ def main():
 
                 # Sensibility threshold
                 if cv2.contourArea(contour) < camera.sensibility:
-                    # Motion stopped
-                    if counter > 0:
-                        counter -= 1
+                    print(f"Not enough motion: {cv2.contourArea(contour)}")
                     continue
 
                 # Take a picture
-                if counter == camera.tolerance:
-                    print("Movement!")
+                elif motion == camera.motion_count:
+                    print("Photo!")
 
                     # Data
                     photo = base64.b64encode(cv2.imencode('.jpg', frame1)[1]).decode('utf-8')
@@ -53,21 +51,23 @@ def main():
                     # HTTP Request
                     asyncio.run(post_photo(f"{api.url}/photos/upload", headers, data))
 
-                    counter += 1
+                    motion += 1
 
                 # Motion counter reset
-                elif counter > camera.tolerance:
-                    counter = 0
+                elif motion > camera.motion_count:
+                    print("Motion reset")
+                    motion = 0
 
                 # Something is moving
                 else:
-                    counter += 1
+                    motion += 1
+                    print(f"Motion counter: {motion}")
 
             frame1 = frame2
             ret, frame2 = cap.read()
 
     except Exception as error:
-        print(f"Error or interruption: {error}")
+        print(f"Error or interruption.")
 
     cap.release()
 
