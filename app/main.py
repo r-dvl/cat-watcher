@@ -14,10 +14,12 @@ def main():
     ret, frame1 = cap.read()
     ret, frame2 = cap.read()
     
+    # Movement must be continuous to take a photo
     counter = 0
 
     try:
         while cap.isOpened():
+            # Frame processing for motion detection
             diff = cv2.absdiff(frame1, frame2)
             diff_gray = cv2.cvtColor(diff, cv2.COLOR_BGR2GRAY)
             blur = cv2.GaussianBlur(diff_gray, (5, 5), 0)
@@ -26,13 +28,17 @@ def main():
             contours, _ = cv2.findContours(
                 dilated, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
 
+            # Motion detection
             for contour in contours:
-                (x, y, w, h) = cv2.boundingRect(contour)
 
-                # Sensibility
+                # Sensibility threshold
                 if cv2.contourArea(contour) < camera.sensibility:
+                    # Motion stopped
+                    if counter > 0:
+                        counter -= 1
                     continue
 
+                # Take a picture
                 if counter == camera.tolerance:
                     print("Movement!")
 
@@ -49,9 +55,11 @@ def main():
 
                     counter += 1
 
+                # Motion counter reset
                 elif counter > camera.tolerance:
                     counter = 0
 
+                # Something is moving
                 else:
                     counter += 1
 
