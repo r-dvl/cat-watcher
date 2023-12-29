@@ -3,13 +3,32 @@ Motion detector built with Python and OpenCV. Once motion is detected the motion
 
 
 ## Contents
-1. [Dependencies](#Dependencies)
+1. [Project Structure](#Project%20Structure)
+2. [App](#App)
+3. [Configuration](#Configuration)
 
 
-## Dependencies
-- Python3
-- Webcam
-- [API](https://github.com/r-dvl/lima-backend)
-- [Front](https://github.com/r-dvl/lima-frontend)
-- Database
+## Project Structure
+```text
+(root)
++- app
+|   +- config                   # Configuration files  
+|       +- api.py
+|       +- camera.py
+|       +- ...
+|   +- utility                  # Utility functions
+|       +- api.py
+|   +- main.py                  # Main script
+|   +- ...
++- requirements.txt
++- ...
+```
+
+
+## App
+Under construction...
+
+
+## Configuratio
+Under construction...
 
