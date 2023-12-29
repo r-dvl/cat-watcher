@@ -29,6 +29,6 @@ Motion detector built with Python and OpenCV. Once motion is detected the motion
 Under construction...
 
 
-## Configuratio
+## Configuration
 Under construction...
 
