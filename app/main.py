@@ -9,6 +9,10 @@ from utility import post_photo
 
 
 def main():
+    """
+    Detects motion through a camera and takes a photo when sufficient motion is detected.
+    The photos are sent to an API via an HTTP POST request.
+    """
     # Camera and frames init
     cap = cv2.VideoCapture(camera.number)
     ret, frame1 = cap.read()
@@ -67,7 +71,7 @@ def main():
             ret, frame2 = cap.read()
 
     except Exception as error:
-        print(f"Error or interruption.")
+        print("Error or interruption.")
 
     cap.release()
 
